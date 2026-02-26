@@ -2,18 +2,19 @@ package puzzle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Puzzle {
     // Puzzle Storage
     private final int [] puzzle; // len. 9
     private int blankIdx; // original Blank location
-    //private int [] goal; // free for any given user goal
+    private int [] goal; // free for any given user goal
 
-    /*public Puzzle (int [] puzzle, int [] goal) {
+    public Puzzle (int [] puzzle, int [] goal) {
         this.puzzle = puzzle;
         this.blankIdx = findBlank(puzzle);
         this.goal = goal;
-    }*/
+    }
 
     public Puzzle (int [] puzzle) {
         this.puzzle = puzzle;
@@ -66,12 +67,12 @@ public class Puzzle {
         int temp = i;
         newPuzzle[i] = j;
         newPuzzle[j] = temp;
-        return new Puzzle(newPuzzle /*, this.goal*/);
+        return new Puzzle(newPuzzle, this.goal);
     }
 
-    /*public boolean isGoal (Puzzle puzzle) {
-
-    }*/
+    public boolean isGoal () {
+        return Arrays.equals(puzzle, goal);
+    }
 
     // Puzzle Equality Checker (Avoid repeat states) - Overrides Java's equals() method
     // to evaluate each Puzzle instance against another.
@@ -89,6 +90,29 @@ public class Puzzle {
     public int hashCode() {
         return Arrays.hashCode(puzzle);
     }
+
+    // Visual Puzzle State Printer - Overrides Java's toString() method
+    // to print a user-friendly 3x3 grid portrayal of the 8 puzzle.
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(); // Mutable string
+
+        for (int i : puzzle) { // Build the 3x3 grid
+            int box = puzzle[i];
+            sb.append(box == 0 ? "_" : box); // Ternary operator; if true, uses blank, if false, uses box
+            sb.append(" ");
+
+            if ((i & 3) == 2) sb.append("\n");
+        }
+        return sb.toString().trim(); // Return 3x3 Grid String without excess whitespace
+    }
+
+    // (Do this in its own place) Random 8 Puzzle Generator - Generate random puzzles for the BFS and DFS to solve.
+//    public int [] puzzleGen (){
+//        while (true) {
+//            List<Integer> boxes = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
+//        }
+//    }
 
     // !! DELETE AT THE END !!
     // Valid Move Rules - Method sets the conditions for valid moves
